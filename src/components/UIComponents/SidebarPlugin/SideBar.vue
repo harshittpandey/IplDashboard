@@ -27,6 +27,7 @@
       <moving-arrow :move-y="arrowMovePx">
 
       </moving-arrow>
+
     </div>
   </div>
 </template>

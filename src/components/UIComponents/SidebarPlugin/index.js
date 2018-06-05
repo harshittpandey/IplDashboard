@@ -6,22 +6,22 @@ const SidebarStore = {
     {
       name: 'Home',
       icon: 'ti-home',
-      path: '/admin/overview'
+      path: '/dashboard/home'
     },
     {
       name: 'Teams',
       icon: 'ti-user',
-      path: '/admin/stats'
+      path: '/dashboard/teams'
     },
     {
       name: 'Search By Match',
       icon: 'ti-search',
-      path: '/admin/table-list'
+      path: '/dashboard/searchmatch'
     },
     {
       name: 'Search Players',
       icon: 'ti-search',
-      path: '/admin/typography'
+      path: '/dashboard/searchplayer'
     }
   ],
   displaySidebar (value) {

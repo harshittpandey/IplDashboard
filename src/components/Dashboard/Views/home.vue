@@ -5,8 +5,8 @@
     <div v-else>
     <span v-for="season in season">
       <span v-if="season.Season_Id===selected">
-        <h2 style="text-align:center">Season {{season.Season_Id}}</h2>
-        <p style="text-align:center; letter-spacing: 4px">Season-Year: {{season.Season_Year}}</p>
+        <h2 class="changefont" style="text-align:center">Season {{season.Season_Id}}</h2>
+        <p class="changefont" style="text-align:center; letter-spacing: 4px">Season-Year: {{season.Season_Year}}</p>
       </span>
     </span>
 
@@ -14,8 +14,8 @@
     <span v-for="season in season">
       <span v-if="season.Season_Id===selected">
         <div class="row">
-          <stats-card class="col-lg-3 col-sm-6" style="margin:10px">
-              <div class="icon-big text-center icon-warning"  slot="header">
+          <stats-card class="col-lg-3 col-sm-6" style="margin:10px; margin-left: 15px; margin-right: 30px">
+              <div class="icon-big text-center icon-warning editcards"  slot="header">
                 <i class="ti-cup"></i>
               </div>
               <div class="numbers" slot="content">
@@ -30,8 +30,8 @@
               </div>
             </stats-card>
 
-            <stats-card class="col-lg-4 col-sm-6" style="margin:10px">
-              <div class="icon-big text-center icon-success"  slot="header">
+            <stats-card class="col-lg-4 col-sm-6" style="margin:10px; margin-right: 30px">
+              <div class="icon-big text-center icon-success editcards"  slot="header">
                 <i class="ti-crown"></i>
               </div>
               <div class="numbers" slot="content">
@@ -46,7 +46,7 @@
               </div>
             </stats-card>
             <stats-card class="col-lg-3 col-sm-6" style="margin:10px">
-              <div class="icon-big text-center icon-danger" slot="header">
+              <div class="icon-big text-center icon-danger editcards" slot="header">
                 <i class="ti-cup"></i>
               </div>
               <div class="numbers" slot="content">
@@ -63,9 +63,12 @@
         </div>
     </span>
     </span>
-
+    <hr>
+    <h2 style="text-align: center; text-decoration: underline;" class="changefont">
+      Results at the end 
+    </h2>
     <div>
-      <line-chart :chart-data="datacollection"></line-chart>
+      <line-chart :chart-data="datacollection" :width="1000" :height="600"></line-chart>
     </div>
 
     <!--Charts-->
@@ -168,11 +171,15 @@
       getWin () {
         let win = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
         for (let i = 0; i < Match.length; i++) {
-          if ((Match[i].IS_Result !== 0) && (Match[i].Win_Type !== 'tie') && (Match[i].Season_Id === this.selected)) {
+          if ((Match[i].IS_Result === 1) && (Match[i].Win_Type !== 'Tie') && (Match[i].Season_Id === this.selected)) {
             win[Match[i].Match_Winner_Id]++
           }
         }
-        console.log('win :' + win)
+        let temp = win[0]
+        for (var i = 0; i < win.length - 1; i++) {
+          win[i] = win[i + 1]
+        }
+        win[win.length - 1] = temp
         return win
       },
       getloss () {
@@ -182,21 +189,29 @@
           let t2 = Match[i].Opponent_Team_Id
           let t3 = t1 + t2
           t3 = t3 - Match[i].Match_Winner_Id
-          if ((Match[i].IS_Result !== 0) && (Match[i].Win_Type !== 'tie') && (Match[i].Season_Id === this.selected)) {
+          if ((Match[i].IS_Result === 1) && (Match[i].Win_Type !== 'Tie') && (Match[i].Season_Id === this.selected)) {
             loss[t3]++
           }
         }
-        console.log('loss :' + loss)
+        let temp = loss[0]
+        for (var i = 0; i < loss.length - 1; i++) {
+          loss[i] = loss[i + 1]
+        }
+        loss[loss.length - 1] = temp
         return loss
       },
       getdraw () {
         let draw = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
         for (let i = 0; i < Match.length; i++) {
-          if ((Match[i].IS_Result !== 0) && (Match[i].Win_Type === 'tie') && (Match[i].Season_Id === this.selected)) {
+          if ((Match[i].IS_Result !== 0) && (Match[i].Win_Type === 'Tie') && (Match[i].Season_Id === this.selected)) {
             draw[Match[i].Match_Winner_Id]++
           }
         }
-        console.log('draw :' + draw)
+        let temp = draw[0]
+        for (var i = 0; i < draw.length - 1; i++) {
+          draw[i] = draw[i + 1]
+        }
+        draw[draw.length - 1] = temp
         return draw
       },
       getnr () {
@@ -207,6 +222,11 @@
             nr[Match[i].Opponent_Team_Id]++
           }
         }
+        let temp = nr[0]
+        for (var i = 0; i < nr.length - 1; i++) {
+          nr[i] = nr[i + 1]
+        }
+        nr[nr.length - 1] = temp
         console.log('noresult :' + nr)
         return nr
       }
@@ -305,5 +325,15 @@
 
 </script>
 <style>
-
+.changefont {
+  font-family: Avant Garde, Avantgarde, Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+}
+.editcards {
+  font-size: 4em!important;
+  background-color: lightgray;
+  border-radius: 5px;
+  position: relative;
+  top: -30px;
+  left: -40px
+}
 </style>

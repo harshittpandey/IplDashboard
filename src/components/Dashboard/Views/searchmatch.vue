@@ -1,13 +1,13 @@
 <template>
     <div class="row">
       <p v-if="selected">Season {{selected}}</p>
-      <p v-else>Please Select Season</p>
+      <p v-else class="card" style="border-radius: 0;width: 200px; padding: 10px; background-color: red;color: white">Please Select Season</p>
     <div v-if="searchbar">  
-      <select v-model="team1" >
+      <select v-model="team1" style="border: 1px solid lightgray; padding: 5px;cursor: pointer;margin-left: 20%">
         <option disabled value="">Please select a team</option>
         <option v-for="team in teams">{{team.Team_Name}}</option>
       </select>
-      <select v-model="team2">
+      <select v-model="team2" style="border: 1px solid lightgray; padding: 5px;cursor: pointer">
         <option disabled value="">Please select a team</option>
         <option v-for="team in teams">
           <span v-if="team.Team_Name===team1" style="cursor: not-allowed"></span>
@@ -16,18 +16,17 @@
           </span>
         </option>
       </select>
-
-      <button v-on:click="collectdata">
+      <p></p>
+      <button style="margin-left: 38%; padding: 5px 10px; border: 1px solid gray; background-color: green; color: white" v-on:click="collectdata">
         Search
       </button>
     </div>
     <div v-else>
-      <button v-on:click="close"> close</button>
+      <button v-on:click="close" style="margin-left: 38%; padding: 5px 10px; border: 1px solid gray; background-color: red; color: white"> close</button>
     </div>
 
       <hr style="border-color: #878787">
-      <p>team 1: {{team1}}</p>
-      <p>team 2: {{team2}}</p>
+      <p style="text-align: center;">team 1: {{team1}}<span ><b>  V/S  </b></span> team 2: {{team2}}</p>
       <div v-for="smatch in matches" >
         <span v-for="matchid in selectedmatchId">
           <span v-if="smatch.Match_Id==matchid">
@@ -57,7 +56,7 @@
                 <p>Venue Name: {{smatch.Venue_Name}}</p>
                 <p>City Name: {{smatch.City_Name}}</p>
                 <p>Country: {{smatch.Host_Country}}</p>
-                <button data-toggle="modal" :data-target="datatarget" :value="smatch.Match_Id" @click="getmatchid($event)" style="text-align: center;">Check More</button>
+                <button data-toggle="modal" :data-target="datatarget" :value="smatch.Match_Id" @click="getmatchid($event)" style="margin-left: 38%; padding: 5px 10px; border: 1px solid lightgray; background-color: lightgray; color: black;text-align: center;">Check More</button>
               </div>
             </div>
           </span>

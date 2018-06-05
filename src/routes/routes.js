@@ -3,59 +3,41 @@ import DashboardLayout from '../components/Dashboard/Layout/DashboardLayout.vue'
 import NotFound from '../components/GeneralViews/NotFoundPage.vue'
 
 // Admin pages
-import Overview from 'src/components/Dashboard/Views/Overview.vue'
-import UserProfile from 'src/components/Dashboard/Views/UserProfile.vue'
-import Notifications from 'src/components/Dashboard/Views/Notifications.vue'
-import Icons from 'src/components/Dashboard/Views/Icons.vue'
-import Maps from 'src/components/Dashboard/Views/Maps.vue'
-import Typography from 'src/components/Dashboard/Views/Typography.vue'
-import TableList from 'src/components/Dashboard/Views/TableList.vue'
+import Home from 'src/components/Dashboard/Views/home.vue'
+import Team from 'src/components/Dashboard/Views/teams.vue'
+import SearchPlayer from 'src/components/Dashboard/Views/searchplayer.vue'
+import SearchMatch from 'src/components/Dashboard/Views/searchmatch.vue'
 
 const routes = [
   {
     path: '/',
     component: DashboardLayout,
-    redirect: '/admin/overview'
+    redirect: '/dashboard/home'
   },
   {
-    path: '/admin',
+    path: '/dashboard',
     component: DashboardLayout,
-    redirect: '/admin/stats',
+    redirect: '/dashboard/teams',
     children: [
       {
-        path: 'overview',
+        path: 'home',
         name: 'Home',
-        component: Overview
+        component: Home
       },
       {
-        path: 'stats',
+        path: 'teams',
         name: 'All Teams',
-        component: UserProfile
+        component: Team
       },
       {
-        path: 'notifications',
-        name: 'notifications',
-        component: Notifications
+        path: 'searchmatch',
+        name: 'Search Match',
+        component: SearchMatch
       },
       {
-        path: 'icons',
-        name: 'icons',
-        component: Icons
-      },
-      {
-        path: 'maps',
-        name: 'maps',
-        component: Maps
-      },
-      {
-        path: 'typography',
-        name: 'Search Players',
-        component: Typography
-      },
-      {
-        path: 'table-list',
-        name: 'Search By Match',
-        component: TableList
+        path: 'searchplayer',
+        name: 'SearchPlayers',
+        component: SearchPlayer
       }
     ]
   },
