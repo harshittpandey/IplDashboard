@@ -33,11 +33,16 @@
           <span v-if="smatch.Match_Id==matchid">
             <div class="card bg-light text-dark" style="padding: 15px;margin-left: 10px;margin-right: 10px">
               <div class="card-body">
-                <span v-if="team1==smatch.Match_Winner_Id">
-                  <h4><span style="color: green">{{team1}}</span> v/s <span style="color: red">{{team2}}</span> (Season {{selected}})</h4>
+                <span v-if="smatch.IS_Result">
+                    <span v-if="team1==smatch.Match_Winner_Id">
+                      <h4><span style="color: green">{{team1}}</span> v/s <span style="color: red">{{team2}}</span> (Season {{selected}})</h4>
+                    </span>
+                    <span v-else>
+                      <h4><span style="color: red">{{team1}}</span> v/s <span style="color: green">{{team2}}</span> (Season {{selected}})</h4>
+                    </span>
                 </span>
                 <span v-else>
-                  <h4><span style="color: red">{{team1}}</span> v/s <span style="color: green">{{team2}}</span> (Season {{selected}})</h4>
+                  <h4>{{team1}} v/s {{team2}} (Season {{selected}})</h4>
                 </span>
                 <hr>
                 <p style="text-align: center;letter-spacing: 4px">DATE: {{smatch.Match_Date}}</p>
@@ -52,11 +57,63 @@
                 <p>Venue Name: {{smatch.Venue_Name}}</p>
                 <p>City Name: {{smatch.City_Name}}</p>
                 <p>Country: {{smatch.Host_Country}}</p>
-                <button data-toggle="modal" data-target="#myModal" style="text-align: center;">Check More</button>
+                <button data-toggle="modal" :data-target="datatarget" :value="smatch.Match_Id" @click="getmatchid($event)" style="text-align: center;">Check More</button>
               </div>
             </div>
           </span>
         </span>
+
+        <div class="modal fade" id="myModal" role="dialog" v-if="smatch.Match_Id==getmatch">
+        <div class="modal-dialog" style="width: 1000px">
+        
+          <!-- Modal content-->
+          <div class="modal-content" >
+            <div class="modal-header">
+              <button type="button" class="close" @click="resetdatatarget()" data-dismiss="modal">&times;</button>
+              <h4 style="text-align: center;">{{team1}} v/s {{team2}}</h4>
+              <p style="text-align: center;letter-spacing: 4px">Date: {{smatch.Match_Date}}</p>
+            </div>
+            <div class=" modal-body" >
+                <p style="text-align: center;">Season : {{smatch.Season_Id}}</p>
+                <h4 v-for="team in teams" style="text-align: center;color: green">
+                  
+                  <span v-if="smatch.Match_Winner_Id===team.Team_Id">
+                    {{team.Team_Name}} Won By 
+                    <span v-if="smatch.Win_Type==='by runs'" style="text-decoration: underline;">{{smatch.Won_By}} runs</span>
+                    <span v-else style="text-decoration: underline;">{{smatch.Won_By}} wickets</span>
+                  </span>
+                </h4>
+                <hr>
+                <div class="row">
+                  <div class="card col-lg-3 col-sm-6" style="text-align: center;margin-left: 20px;width: 400px; padding: 10px; background-color: #E6E2E2">
+                    <p>Venue Name   : {{smatch.Venue_Name}} </p>
+                    <p>City Name    : {{smatch.City_Name}} </p>
+                    <p>Host_Country : {{smatch.Host_Country}} </p>
+                  </div>
+                  <div>
+                    <h4 style="text-align: center;">Venue Details</h4>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-6 col-sm-6">
+                    <h4 style="text-align: center;">Toss</h4>
+                  </div>
+                  <div class="card col-lg-6 col-sm-6" style="text-align: center;margin-left: 20px;width: 400px; padding: 10px; background-color: #E6E2E2">
+                    <p>Toss Winner  :<span v-for="teamname in teams"><span v-if="teamname.Team_Id==smatch.Toss_Winner_Id"> {{teamname.Team_Name}} </span> </span></p>
+                    <p>Toss Decision    : {{smatch.Toss_Decision}} </p>
+                  </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" @click="resetdatatarget()" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
       </div>
     </div>
 </template>
@@ -75,10 +132,21 @@ export default {
       opponentid: '',
       opponent2id: '',
       selectedmatchId: [],
-      searchbar: 1
+      searchbar: 1,
+      getmatch: 1,
+      datatarget: ''
     }
   },
   methods: {
+    resetdatatarget () {
+      this.datatarget = ''
+    },
+    getmatchid (e) {
+      const buttonValue = e.target.value
+      this.getmatch = buttonValue
+      this.datatarget = '#myModal'
+      console.log(this.getmatch)
+    },
     cleareverything () {
       console.log('he')
     },

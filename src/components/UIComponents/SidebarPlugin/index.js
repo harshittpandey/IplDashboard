@@ -19,19 +19,9 @@ const SidebarStore = {
       path: '/admin/table-list'
     },
     {
-      name: 'Most sixes',
-      icon: 'ti-thumb-up',
+      name: 'Search Players',
+      icon: 'ti-search',
       path: '/admin/typography'
-    },
-    {
-      name: 'Most fours',
-      icon: 'ti-hand-stop',
-      path: '/admin/icons'
-    },
-    {
-      name: 'Most wickets',
-      icon: 'ti-more',
-      path: '/admin/maps'
     }
   ],
   displaySidebar (value) {

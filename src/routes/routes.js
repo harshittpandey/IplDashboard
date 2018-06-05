@@ -49,7 +49,7 @@ const routes = [
       },
       {
         path: 'typography',
-        name: 'typography',
+        name: 'Search Players',
         component: Typography
       },
       {

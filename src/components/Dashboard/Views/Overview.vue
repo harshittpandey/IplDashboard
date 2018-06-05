@@ -6,7 +6,7 @@
     <span v-for="season in season">
       <span v-if="season.Season_Id===selected">
         <h2 style="text-align:center">Season {{season.Season_Id}}</h2>
-        <h4 style="text-align:center">Season-Year: {{season.Season_Year}}</h4>
+        <p style="text-align:center; letter-spacing: 4px">Season-Year: {{season.Season_Year}}</p>
       </span>
     </span>
 
@@ -64,6 +64,10 @@
     </span>
     </span>
 
+    <div>
+      <line-chart :chart-data="datacollection"></line-chart>
+    </div>
+
     <!--Charts-->
     <!-- <div class="row">
 
@@ -118,14 +122,93 @@
   import { EventBus } from '../../../event-bus.js'
   import Season from '../../../assets/data/season.json'
   import Player from '../../../assets/data/player.json'
+  import Match from '../../../assets/data/match.json'
+  import LineChart from './LineChart.js'
+  
   export default {
     components: {
       StatsCard,
-      ChartCard
+      ChartCard,
+      LineChart
     },
     methods: {
       getSeason (value) {
         this.selected = value
+      },
+      changechartdata () {
+        this.fillData()
+      },
+      fillData () {
+        this.datacollection = {
+          labels: ['KKR', 'RCB', 'CSK', 'KXIP', 'RR', 'DD', 'MI', 'DC', 'KTK', 'PW', 'SH', 'RPS', 'GL'],
+          datasets: [
+            {
+              label: 'Win',
+              backgroundColor: 'green',
+              data: this.getWin()
+            },
+            {
+              label: 'Loss',
+              backgroundColor: 'red',
+              data: this.getloss()
+            },
+            {
+              label: 'Tie',
+              backgroundColor: 'blue',
+              data: this.getdraw()
+            },
+            {
+              label: 'No Result',
+              backgroundColor: 'lightblue',
+              data: this.getnr()
+            }
+          ]
+        }
+      },
+      getWin () {
+        let win = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+        for (let i = 0; i < Match.length; i++) {
+          if ((Match[i].IS_Result !== 0) && (Match[i].Win_Type !== 'tie') && (Match[i].Season_Id === this.selected)) {
+            win[Match[i].Match_Winner_Id]++
+          }
+        }
+        console.log('win :' + win)
+        return win
+      },
+      getloss () {
+        let loss = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+        for (let i = 0; i < Match.length; i++) {
+          let t1 = Match[i].Team_Name_Id
+          let t2 = Match[i].Opponent_Team_Id
+          let t3 = t1 + t2
+          t3 = t3 - Match[i].Match_Winner_Id
+          if ((Match[i].IS_Result !== 0) && (Match[i].Win_Type !== 'tie') && (Match[i].Season_Id === this.selected)) {
+            loss[t3]++
+          }
+        }
+        console.log('loss :' + loss)
+        return loss
+      },
+      getdraw () {
+        let draw = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+        for (let i = 0; i < Match.length; i++) {
+          if ((Match[i].IS_Result !== 0) && (Match[i].Win_Type === 'tie') && (Match[i].Season_Id === this.selected)) {
+            draw[Match[i].Match_Winner_Id]++
+          }
+        }
+        console.log('draw :' + draw)
+        return draw
+      },
+      getnr () {
+        let nr = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+        for (let i = 0; i < Match.length; i++) {
+          if ((Match[i].IS_Result === 0) && (Match[i].Season_Id === this.selected)) {
+            nr[Match[i].Team_Name_Id]++
+            nr[Match[i].Opponent_Team_Id]++
+          }
+        }
+        console.log('noresult :' + nr)
+        return nr
       }
     },
     created () {
@@ -133,6 +216,11 @@
     },
     beforeDestroy () {
       EventBus.$off('seasonvalue')
+      clearInterval(this.interval)
+    },
+    mounted () {
+      this.fillData()
+      this.interval = setInterval(this.changechartdata, 1000)
     },
     /**
      * Chart data used to render stats, charts. Should be replaced with server data
@@ -142,6 +230,7 @@
         players: Player,
         season: Season,
         selected: '',
+        datacollection: null,
         statsCards: [
           {
             type: 'warning',
