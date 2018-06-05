@@ -26,9 +26,9 @@
       <span v-if="battinghand">
           <span v-if="bowlingskill">
             <span v-if="(player.Batting_Hand==battinghand)&&(player.Bowling_Skill==bowlingskill)">
-              <div class="card" style="width: 200px; padding: 5px 10px; border: 1px solid gray;">
+              <div class="card" style="width: 800px;margin-left:4%; padding: 5px 10px; border: 1px solid gray;">
                 <div class="card-header">
-                  <h3>{{player.Player_Name}}</h3>
+                  <h3 style="text-align: center;letter-spacing: 4px">{{player.Player_Name}}</h3>
                   <hr>
                 </div>
                 <div class="card-body">
@@ -53,14 +53,58 @@
           </span>
           <span v-else>
             <span v-if="player.Batting_Hand==battinghand">
-              <p> {{player}} </p>
+              <div class="card" style="width: 800px;margin-left:4%; padding: 5px 10px; border: 1px solid gray;">
+                <div class="card-header">
+                  <h3 style="text-align: center;letter-spacing: 4px">{{player.Player_Name}}</h3>
+                  <hr>
+                </div>
+                <div class="card-body">
+                  <p v-if="player.Batting_Hand !== 'null'">
+                    Batting Hand : {{player.Batting_Hand}}
+                  </p>
+                  <p v-if="player.Batting_Hand !== 'null'">
+                    Bowling Skill : {{player.Bowling_Skill}}
+                  </p>
+                  <p>
+                    Country : {{player.Country}}
+                  </p>
+                  <p>
+                    Date Of Birth : {{player.DOB}}
+                  </p>
+                  <p v-if="player.Is_Umpire">
+                    Is Umpire : Yes
+                  </p>
+                </div> 
+              </div>
             </span>
           </span>
       </span>
       <span v-else>
         <span v-if="bowlingskill">
           <span v-if="player.Bowling_Skill==bowlingskill">
-              <p> {{player}} </p>
+              <div class="card" style="width: 800px;margin-left:4%; padding: 5px 10px; border: 1px solid gray;">
+                <div class="card-header">
+                  <h3 style="text-align: center; letter-spacing: 4px" >{{player.Player_Name}}</h3>
+                  <hr>
+                </div>
+                <div class="card-body">
+                  <p v-if="player.Batting_Hand !== 'null'">
+                    Batting Hand : {{player.Batting_Hand}}
+                  </p>
+                  <p v-if="player.Batting_Hand !== 'null'">
+                    Bowling Skill : {{player.Bowling_Skill}}
+                  </p>
+                  <p>
+                    Country : {{player.Country}}
+                  </p>
+                  <p>
+                    Date Of Birth : {{player.DOB}}
+                  </p>
+                  <p v-if="player.Is_Umpire">
+                    Is Umpire : Yes
+                  </p>
+                </div> 
+              </div>
             </span>
         </span>
       </span>
